@@ -52,4 +52,4 @@ versions/*
 *.jpg
 *.caffemodel
 .yaml
-src/templates/parts/footer.html
+# src/templates/parts/footer.html

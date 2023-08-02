@@ -21,13 +21,13 @@ app.mount("/templates", StaticFiles(directory="src/templates"), name="templates"
 
 templates = Jinja2Templates(directory="src/templates")
 
-MQTT_BROKER_HOST = "localhost"
+MQTT_BROKER_HOST = "188.166.242.227"
 MQTT_BROKER_PORT = 1883
-MQTT_TOPIC = "test_topic"
+MQTT_TOPIC = "/ppns/monitor_kapal"
 
 def on_message(client, userdata, message):
-    payload = message.payload.decode("utf-8")
     try:
+        payload = message.payload.decode("utf-8")
         payload_split = payload.split("&")
         # print(payload_split)
         dict_send = {}
@@ -65,6 +65,11 @@ async def startup():
 async def shutdown():
     await db.disconnect()
     disconnect_mqtt()
+
+@app.get("/")
+async def redirect():
+    response = RedirectResponse(url='/list/map')
+    return response
 
 app.include_router(map_data_router)
 
