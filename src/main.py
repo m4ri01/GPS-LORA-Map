@@ -74,4 +74,4 @@ async def redirect():
 app.include_router(map_data_router)
 
 if __name__ == "__main__":
-    uvicorn.run("main:app",port=5555,log_level="info",reload=True,host="0.0.0.0")
+    uvicorn.run("main:app",port=80,log_level="info",reload=True,host="0.0.0.0")
