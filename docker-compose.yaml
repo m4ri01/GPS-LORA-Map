@@ -1,0 +1,28 @@
+version: '3'
+services:
+  db:
+    container_name: map_db
+    image: postgres
+    restart: always
+    volumes:
+    - map_db:/var/lib/postgresql/data/:rw
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: map123
+      POSTGRES_DB: map_db
+      PGDATA: /var/lib/postgresql/data/
+      TZ: Asia/Jakarta
+    ports:
+      - "5432:5432"
+  mqtt:
+    image: eclipse-mosquitto:1.6
+    container_name: map_broker_service
+    volumes:
+    - ./mqtt/:/mosquitto/config/
+    ports:
+    - "19001:9001"
+    - "11883:1883"
+    restart: always
+
+volumes:
+  map_db:

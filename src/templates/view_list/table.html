@@ -1,0 +1,36 @@
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>Message ID</th>
+                    <th>Ship ID</th>
+                    <th>Nama Kapal</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>Yaw</th>
+                    <th>Pitch</th>
+                    <th>Roll</th>
+                    <th>Created At</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in data%}
+                    <tr>
+                      <td>{{loop.index}}</td>
+                      <td>{{item.msg_id}}</td>
+                      <td>{{item.ship_id}}</td>
+                      <td>{{item.nama_kapal}}</td>
+                      <td>{{item.latitude}}</td>
+                      <td>{{item.longitude}}</td>
+                      <td>{{item.yaw}}</td>
+                      <td>{{item.pitch}}</td>
+                      <td>{{item.roll}}</td>
+                      <td>{{item.created_at}}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
