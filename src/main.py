@@ -22,7 +22,7 @@ app.mount("/templates", StaticFiles(directory="src/templates"), name="templates"
 templates = Jinja2Templates(directory="src/templates")
 
 MQTT_BROKER_HOST = "localhost"
-MQTT_BROKER_PORT = 11883
+MQTT_BROKER_PORT = 1883
 MQTT_TOPIC = "test_topic"
 
 def on_message(client, userdata, message):
@@ -38,7 +38,8 @@ def on_message(client, userdata, message):
                 dict_send[data_split[0]] = float(data_split[1]) 
             else:
                 dict_send[data_split[0]] = data_split[1]  
-        publish.single("map_realtime", json.dumps(dict_send), hostname=MQTT_BROKER_HOST, port=MQTT_BROKER_PORT)
+        requests.post("http://localhost:5555/list",json=dict_send)
+        # publish.single("map_realtime", json.dumps(dict_send), hostname=MQTT_BROKER_HOST, port=MQTT_BROKER_PORT)
     except Exception as e:
         print("error {}".format(e))
 

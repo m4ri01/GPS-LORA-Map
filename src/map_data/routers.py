@@ -4,6 +4,7 @@ from src.map_data.models import data_lora
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 from src.map_data.schema import MapDataIn
+from sqlalchemy import desc
 from uuid import UUID
 
 router = APIRouter(
@@ -15,9 +16,13 @@ templates = Jinja2Templates(directory="src/templates")
 
 @router.get("/",response_class=HTMLResponse)
 async def show_data_list(request:Request):
-    query = data_lora.select()
+    query = data_lora.select().order_by(desc(data_lora.c.created_at))
     data = await db.fetch_all(query)
     return templates.TemplateResponse("view_list/index.html",{"request":request,"data":data})
+
+@router.get("/map",response_class=HTMLResponse)
+async def show_map(request:Request):
+    return templates.TemplateResponse("view_map/index.html",{"request":request})
 
 @router.post("/")
 async def add_data(data:MapDataIn):
