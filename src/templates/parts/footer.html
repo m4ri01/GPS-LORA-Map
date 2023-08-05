@@ -94,72 +94,192 @@ crossorigin=""></script>
       iconSize: [30, 30],
       iconAnchor: [15, 30]
     });
-    var tower1 = L.marker([-7.2782725, 112.7938762], { icon: icon_node1 }).addTo(map);
-    var tower2 = L.marker([-7.2781905, 112.7939742], { icon: icon_node2 }).addTo(map);
-    var tower3 = L.marker([-7.2783495, 112.7934002], { icon: icon_node3 }).addTo(map);
-    var ship = L.marker([-7.2786715, 112.7932752], { icon: icon_node4 }).addTo(map);
+    var tower1 = L.marker([-7.2789019,112.7934876], { icon: icon_node1 }).addTo(map);
+    var tower2 = L.marker([-7.2786019,112.7936876], { icon: icon_node2 }).addTo(map);
+    var tower3 = L.marker([-7.2792019,112.7936876], { icon: icon_node3 }).addTo(map);
+    var ship = L.marker([-7.2789019,112.7936876], { icon: icon_node4 }).addTo(map);
+    var jsonSummary = {};
     {% for item in data_map%}
-      if("{{item.ship_id}}"=="1"){
-        if ("{{item.latitude}}"!=0.0 && "{{item.longitude}}" != 0.0 ){
-          tower1 = L.marker([parseFloat({{item.latitude}}), parseFloat({{item.longitude}})], { icon: icon_node1 }).addTo(map)
-        }
-        tower1.bindPopup(
-            "<b>Message Id: "+item.msg_id+"</b>"+
-            "<b>Ship Id: "+item.ship_id+"</b>"+
-            "<b>Nama Kapal: "+item.nama_kapal+"</b>"+
-            "<b>Message Id: "+item.msg_id+"</b>"+
-            "<b>Yaw: "+item.yaw+"</b>"+
-            "<b>Pitch: "+item.pitch+"</b>"+
-            "<b>Roll: "+item.roll+"</b>"
-          );
-      }
-      else if("{{item.ship_id}}"=="2"){
-        if ("{{item.latitude}}"!=0.0 && "{{item.longitude}}" != 0.0 ){
-          tower2 = L.marker([parseFloat({{item.latitude}}), parseFloat({{item.longitude}})], { icon: icon_node2 }).addTo(map);
-        }
-        tower2.bindPopup(
-            "<b>Message Id: "+item.msg_id+"</b>"+
-            "<b>Ship Id: "+item.ship_id+"</b>"+
-            "<b>Nama Kapal: "+item.nama_kapal+"</b>"+
-            "<b>Message Id: "+item.msg_id+"</b>"+
-            "<b>Yaw: "+item.yaw+"</b>"+
-            "<b>Pitch: "+item.pitch+"</b>"+
-            "<b>Roll: "+item.roll+"</b>"
-          );
-      }
-      else if("{{item.ship_id}}"=="3"){
-        if ("{{item.latitude}}"!=0.0 && "{{item.longitude}}" != 0.0 ){
-          tower3 = L.marker([parseFloat({{item.latitude}}), parseFloat({{item.longitude}})], { icon: icon_node3 }).addTo(map);
-        }
-        tower3.bindPopup(
-            "<b>Message Id: "+item.msg_id+"</b>"+
-            "<b>Ship Id: "+item.ship_id+"</b>"+
-            "<b>Nama Kapal: "+item.nama_kapal+"</b>"+
-            "<b>Message Id: "+item.msg_id+"</b>"+
-            "<b>Yaw: "+item.yaw+"</b>"+
-            "<b>Pitch: "+item.pitch+"</b>"+
-            "<b>Roll: "+item.roll+"</b>"
-          );
-      }
-      else if("{{item.ship_id}}"=="4"){
-        if ("{{item.latitude}}"!=0.0 && "{{item.longitude}}" != 0.0 ){
-          ship = L.marker([parseFloat({{item.latitude}}), parseFloat({{item.longitude}})], { icon: icon_node4 }).addTo(map);
-        }
-        ship.bindPopup(
-            "<b>Message Id: "+item.msg_id+"</b>"+
-            "<b>Ship Id: "+item.ship_id+"</b>"+
-            "<b>Nama Kapal: "+item.nama_kapal+"</b>"+
-            "<b>Message Id: "+item.msg_id+"</b>"+
-            "<b>Yaw: "+item.yaw+"</b>"+
-            "<b>Pitch: "+item.pitch+"</b>"+
-            "<b>Roll: "+item.roll+"</b>"
-          );
-      }
-
+    var jsonDB = {};
+    jsonDB["msg_id"] = {{item.msg_id}};
+    jsonDB["ship_id"] = {{item.ship_id}};
+    jsonDB["nama_kapal"] = "{{item.nama_kapal}}";
+    jsonDB["latitude"] = {{item.latitude}};
+    jsonDB["longitude"] = {{item.longitude}};
+    jsonDB["yaw"] = {{item.yaw}};
+    jsonDB["pitch"] = {{item.pitch}};
+    jsonDB["roll"] = {{item.roll}};
+    jsonDB["RSSI"] = {{item.RSSI}}
+    jsonSummary[{{item.ship_id}}] = jsonDB;
     {% endfor %}
+
+    if(jsonSummary["2"]["RSSI"] > jsonSummary["3"]["RSSI"]){
+      var popup_ship = "<br><h4>Ship</h4>"+"<br><b>Message Id: "+ jsonSummary["4"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["4"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["4"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["4"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["4"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["4"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["4"]["RSSI"]+"</b>";
+      var popup_tower_3 = "<br><h4>Tower 3</h4>"+"<br><b>Message Id: "+ jsonSummary["3"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["3"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["3"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["3"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["3"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["3"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["3"]["RSSI"]+"</b>";
+      var popup_tower_2 = "<br><h4>Tower 2</h4>"+"<br><b>Message Id: "+ jsonSummary["2"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["2"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["2"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["2"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["2"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["2"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["2"]["RSSI"]+"</b>"+
+            "<br><h4>Ship</h4>"+"<br><b>Message Id: "+ jsonSummary["4"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["4"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["4"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["4"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["4"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["4"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["4"]["RSSI"]+"</b>";
+      var popup_tower_1 = "<br><h4>Tower 1</h4>"+"<br><b>Message Id: "+ jsonSummary["1"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["1"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["1"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["1"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["1"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["1"]["roll"]+"</b>"+
+            "<br><h4>Tower 2</h4>"+"<br><b>Message Id: "+ jsonSummary["2"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["2"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["2"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["2"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["2"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["2"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["2"]["RSSI"]+"</b>"+
+            "<br><h4>Ship</h4>"+"<br><b>Message Id: "+ jsonSummary["4"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["4"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["4"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["4"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["4"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["4"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["4"]["RSSI"]+"</b>";
+        if(jsonSummary["4"]["latitude"]!=0 && jsonSummary["4"]["longitude"]!=0){
+          // ship.setLatLng([jsonSummary["4"]["latitude"], jsonSummary["4"]["longitude"]]);
+          ship.bindPopup(popup_ship);
+        }
+        else{
+          ship.bindPopup(popup_ship);
+        }
+
+        if(jsonSummary["3"]["latitude"]!=0 && jsonSummary["3"]["longitude"]!=0){
+          // tower3.setLatLng([jsonSummary["3"]["latitude"], jsonSummary["3"]["longitude"]]);
+          tower3.bindPopup(popup_tower_3);
+        }
+        else{
+          tower3.bindPopup(popup_tower_3);
+        }
+
+        if(jsonSummary["2"]["latitude"]!=0 && jsonSummary["2"]["longitude"]!=0){
+          tower2.setLatLng([jsonSummary["2"]["latitude"], jsonSummary["2"]["longitude"]]);
+          tower2.bindPopup(popup_tower_2);
+        }
+        else{
+          tower2.bindPopup(popup_tower_2);
+        }
+
+        if(jsonSummary["1"]["latitude"]!=0 && jsonSummary["1"]["longitude"]!=0){
+          tower1.setLatLng([jsonSummary["1"]["latitude"], jsonSummary["1"]["longitude"]]);
+          tower1.bindPopup(popup_tower_1);
+        }
+        else{
+          tower1.bindPopup(popup_tower_1);
+        }
+
     }
-    catch{
-      console.log("error");
+    else{
+      var popup_ship = "<br><h2>Ship</h2>"+"<br><b>Message Id: "+ jsonSummary["4"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["4"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["4"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["4"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["4"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["4"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["4"]["RSSI"]+"</b>";
+      var popup_tower_2 = "<br><h2>Tower 2</h2>"+"<br><b>Message Id: "+ jsonSummary["2"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["2"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["2"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["2"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["2"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["2"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["2"]["RSSI"]+"</b>";
+      var popup_tower_3 = "<br><h2>Tower 3</h2>"+"<br><b>Message Id: "+ jsonSummary["3"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["3"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["3"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["3"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["3"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["3"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["3"]["RSSI"]+"</b>"+
+            "<br><h2>Ship</h2>"+"<br><b>Message Id: "+ jsonSummary["4"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["4"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["4"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["4"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["4"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["4"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["4"]["RSSI"]+"</b>";
+      var popup_tower_1 = "<br><h2>Tower 1</h2>"+"<br><b>Message Id: "+ jsonSummary["1"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["1"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["1"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["1"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["1"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["1"]["roll"]+"</b>"+
+            "<br><h2>Tower 3</h2>"+"<br><b>Message Id: "+ jsonSummary["3"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["3"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["3"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["3"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["3"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["3"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["3"]["RSSI"]+"</b>"+
+            "<br><h2>Ship</h2>"+"<br><b>Message Id: "+ jsonSummary["4"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["4"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["4"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["4"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["4"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["4"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["4"]["RSSI"]+"</b>";
+        if(jsonSummary["4"]["latitude"]!=0 && jsonSummary["4"]["longitude"]!=0){
+          // ship.setLatLng([jsonSummary["4"]["latitude"], jsonSummary["4"]["longitude"]]);
+          ship.bindPopup(popup_ship);
+        }
+        else{
+          ship.bindPopup(popup_ship);
+        }
+
+        if(jsonSummary["3"]["latitude"]!=0 && jsonSummary["3"]["longitude"]!=0){
+          // tower3.setLatLng([jsonSummary["3"]["latitude"], jsonSummary["3"]["longitude"]]);
+          tower3.bindPopup(popup_tower_3);
+        }
+        else{
+          tower3.bindPopup(popup_tower_3);
+        }
+
+        if(jsonSummary["2"]["latitude"]!=0 && jsonSummary["2"]["longitude"]!=0){
+          tower2.setLatLng([jsonSummary["2"]["latitude"], jsonSummary["2"]["longitude"]]);
+          tower2.bindPopup(popup_tower_2);
+        }
+        else{
+          tower2.bindPopup(popup_tower_2);
+        }
+
+        if(jsonSummary["1"]["latitude"]!=0 && jsonSummary["1"]["longitude"]!=0){
+          tower1.setLatLng([jsonSummary["1"]["latitude"], jsonSummary["1"]["longitude"]]);
+          tower1.bindPopup(popup_tower_1);
+        }
+        else{
+          tower1.bindPopup(popup_tower_1);
+        }
+    }
+
+    }
+    catch(error){
+      console.log(error);
     }
    
     var mqtt;
@@ -172,111 +292,203 @@ crossorigin=""></script>
       setTimeout(MQTTconnect, reconnectTimeout);
         }
     function onMessageArrived(msg){
-      var message = ""+msg.payloadString;
       try{
+        var message = ""+msg.payloadString;
+        // console.log(message);
         var message_split = message.split("&");
         var jsonMessage = {};
         for(i=0;i<message_split.length;i++){
           key_value = message_split[i].split("=");
-          jsonMessage[key_value[0]] = key_value[1];
+          if(key_value[0] == "rssi"){
+            jsonMessage["RSSI"] = parseInt(key_value[1]);
+          }
+          else{
+            jsonMessage[key_value[0]] = key_value[1];
+          }
+        }
+        // console.log(jsonMessage);
+        if(jsonMessage["ship_id"]=="1"){
+          jsonSummary["1"] = jsonMessage;
+        }
+        else if(jsonMessage["ship_id"]=="2"){
+          jsonSummary["2"] = jsonMessage;
+        }
+        else if(jsonMessage["ship_id"]=="3"){
+          jsonSummary["3"] = jsonMessage;
+        }
+        else if(jsonMessage["ship_id"]=="4"){
+          jsonSummary["4"] = jsonMessage;
+        }
+        // console.log(jsonSummary);
+        console.log("Tower 2:"+jsonSummary["2"]["RSSI"]+",Tower 3:"+jsonSummary["3"]["RSSI"]);
+        if(jsonSummary["2"]["RSSI"] > jsonSummary["3"]["RSSI"]){
+      var popup_ship = "<br><h4>Ship</h4>"+"<br><b>Message Id: "+ jsonSummary["4"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["4"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["4"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["4"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["4"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["4"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["4"]["RSSI"]+"</b>";
+      var popup_tower_3 = "<br><h4>Tower 3</h4>"+"<br><b>Message Id: "+ jsonSummary["3"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["3"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["3"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["3"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["3"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["3"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["3"]["RSSI"]+"</b>";
+      var popup_tower_2 = "<br><h4>Tower 2</h4>"+"<br><b>Message Id: "+ jsonSummary["2"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["2"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["2"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["2"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["2"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["2"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["2"]["RSSI"]+"</b>"+
+            "<br><h4>Ship</h4>"+"<br><b>Message Id: "+ jsonSummary["4"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["4"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["4"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["4"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["4"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["4"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["4"]["RSSI"]+"</b>";
+      var popup_tower_1 = "<br><h4>Tower 1</h4>"+"<br><b>Message Id: "+ jsonSummary["1"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["1"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["1"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["1"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["1"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["1"]["roll"]+"</b>"+
+            "<br><h4>Tower 2</h4>"+"<br><b>Message Id: "+ jsonSummary["2"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["2"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["2"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["2"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["2"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["2"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["2"]["RSSI"]+"</b>"+
+            "<br><h4>Ship</h4>"+"<br><b>Message Id: "+ jsonSummary["4"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["4"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["4"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["4"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["4"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["4"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["4"]["RSSI"]+"</b>";
+        if(jsonSummary["4"]["latitude"]!=0 && jsonSummary["4"]["longitude"]!=0){
+          // ship.setLatLng([jsonSummary["4"]["latitude"], jsonSummary["4"]["longitude"]]);
+          ship.bindPopup(popup_ship);
+        }
+        else{
+          ship.bindPopup(popup_ship);
         }
 
-        if(jsonMessage.ship_id == "1" && parseFloat(jsonMessage.latitude)!=0 && parseFloat(jsonMessage.longitude)!=0){
-          tower1.setLatLng([jsonMessage.latitude, jsonMessage.longitude]);
-          tower1.bindPopup(
-            "<b>Message Id: "+jsonMessage.msg_id+"</b>"+
-            "<br><b>Ship Id: "+jsonMessage.ship_id+"</b>"+
-            "<br><b>Nama Kapal: "+jsonMessage.nama_kapal+"</b>"+
-            "<br><b>Message Id: "+jsonMessage.msg_id+"</b>"+
-            "<br><b>Yaw: "+jsonMessage.yaw+"</b>"+
-            "<br><b>Pitch: "+jsonMessage.pitch+"</b>"+
-            "<br><b>Roll: "+jsonMessage.roll+"</b>"
-          );
+        if(jsonSummary["3"]["latitude"]!=0 && jsonSummary["3"]["longitude"]!=0){
+          // tower3.setLatLng([jsonSummary["3"]["latitude"], jsonSummary["3"]["longitude"]]);
+          tower3.bindPopup(popup_tower_3);
         }
-        else if (jsonMessage.ship_id == "1"){
-          tower1.bindPopup(
-            "<b>Message Id: "+jsonMessage.msg_id+"</b>"+
-            "<br><b>Ship Id: "+jsonMessage.ship_id+"</b>"+
-            "<br><b>Nama Kapal: "+jsonMessage.nama_kapal+"</b>"+
-            "<br><b>Message Id: "+jsonMessage.msg_id+"</b>"+
-            "<br><b>Yaw: "+jsonMessage.yaw+"</b>"+
-            "<br><b>Pitch: "+jsonMessage.pitch+"</b>"+
-            "<br><b>Roll: "+jsonMessage.roll+"</b>"
-          );
+        else{
+          tower3.bindPopup(popup_tower_3);
         }
-        
-        else if(jsonMessage.ship_id == "2" && parseFloat(jsonMessage.latitude)!=0 && parseFloat(jsonMessage.longitude)!=0){
-          tower2.setLatLng([jsonMessage.latitude, jsonMessage.longitude]);
-          tower2.bindPopup(
-            "<b>Message Id: "+jsonMessage.msg_id+"</b>"+
-            "<br><b>Ship Id: "+jsonMessage.ship_id+"</b>"+
-            "<br><b>Nama Kapal: "+jsonMessage.nama_kapal+"</b>"+
-            "<br><b>Message Id: "+jsonMessage.msg_id+"</b>"+
-            "<br><b>Yaw: "+jsonMessage.yaw+"</b>"+
-            "<br><b>Pitch: "+jsonMessage.pitch+"</b>"+
-            "<br><b>Roll: "+jsonMessage.roll+"</b>"
-          );
+
+        if(jsonSummary["2"]["latitude"]!=0 && jsonSummary["2"]["longitude"]!=0){
+          tower2.setLatLng([jsonSummary["2"]["latitude"], jsonSummary["2"]["longitude"]]);
+          tower2.bindPopup(popup_tower_2);
         }
-        else if(jsonMessage.ship_id == "2"){
-          tower2.bindPopup(
-            "<b>Message Id: "+jsonMessage.msg_id+"</b>"+
-            "<br><b>Ship Id: "+jsonMessage.ship_id+"</b>"+
-            "<br><b>Nama Kapal: "+jsonMessage.nama_kapal+"</b>"+
-            "<br><b>Message Id: "+jsonMessage.msg_id+"</b>"+
-            "<br><b>Yaw: "+jsonMessage.yaw+"</b>"+
-            "<br><b>Pitch: "+jsonMessage.pitch+"</b>"+
-            "<br><b>Roll: "+jsonMessage.roll+"</b>"
-          );
+        else{
+          tower2.bindPopup(popup_tower_2);
         }
-        else if(jsonMessage.ship_id=="3" && parseFloat(jsonMessage.latitude)!=0 && parseFloat(jsonMessage.longitude)!=0){
-          tower3.setLatLng([jsonMessage.latitude, jsonMessage.longitude]);
-          tower3.bindPopup(
-            "<b>Message Id: "+jsonMessage.msg_id+"</b>"+
-            "<br><b>Ship Id: "+jsonMessage.ship_id+"</b>"+
-            "<br><b>Nama Kapal: "+jsonMessage.nama_kapal+"</b>"+
-            "<br><b>Message Id: "+jsonMessage.msg_id+"</b>"+
-            "<br><b>Yaw: "+jsonMessage.yaw+"</b>"+
-            "<br><b>Pitch: "+jsonMessage.pitch+"</b>"+
-            "<br><b>Roll: "+jsonMessage.roll+"</b>"
-          );
+
+        if(jsonSummary["1"]["latitude"]!=0 && jsonSummary["1"]["longitude"]!=0){
+          tower1.setLatLng([jsonSummary["1"]["latitude"], jsonSummary["1"]["longitude"]]);
+          tower1.bindPopup(popup_tower_1);
         }
-        else if(jsonMessage.ship_id=="3"){
-          tower3.bindPopup(
-            "<b>Message Id: "+jsonMessage.msg_id+"</b>"+
-            "<br><b>Ship Id: "+jsonMessage.ship_id+"</b>"+
-            "<br><b>Nama Kapal: "+jsonMessage.nama_kapal+"</b>"+
-            "<br><b>Message Id: "+jsonMessage.msg_id+"</b>"+
-            "<br><b>Yaw: "+jsonMessage.yaw+"</b>"+
-            "<br><b>Pitch: "+jsonMessage.pitch+"</b>"+
-            "<br><b>Roll: "+jsonMessage.roll+"</b>"
-          );
+        else{
+          tower1.bindPopup(popup_tower_1);
         }
-        else if(jsonMessage.ship_id=="4" && parseFloat(jsonMessage.latitude)!=0 && parseFloat(jsonMessage.longitude)!=0){
-          ship.setLatLng([jsonMessage.latitude, jsonMessage.longitude]);
-          ship.bindPopup(
-            "<b>Message Id: "+jsonMessage.msg_id+"</b>"+
-            "<br><b>Ship Id: "+jsonMessage.ship_id+"</b>"+
-            "<br><b>Nama Kapal: "+jsonMessage.nama_kapal+"</b>"+
-            "<br><b>Message Id: "+jsonMessage.msg_id+"</b>"+
-            "<br><b>Yaw: "+jsonMessage.yaw+"</b>"+
-            "<br><b>Pitch: "+jsonMessage.pitch+"</b>"+
-            "<br><b>Roll: "+jsonMessage.roll+"</b>"
-          );
+
+    }
+    else if (jsonSummary["2"]["RSSI"] < jsonSummary["3"]["RSSI"]){
+      var popup_ship = "<br><h2>Ship</h2>"+"<br><b>Message Id: "+ jsonSummary["4"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["4"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["4"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["4"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["4"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["4"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["4"]["RSSI"]+"</b>";
+      var popup_tower_2 = "<br><h2>Tower 2</h2>"+"<br><b>Message Id: "+ jsonSummary["2"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["2"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["2"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["2"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["2"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["2"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["2"]["RSSI"]+"</b>";
+      var popup_tower_3 = "<br><h2>Tower 3</h2>"+"<br><b>Message Id: "+ jsonSummary["3"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["3"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["3"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["3"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["3"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["3"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["3"]["RSSI"]+"</b>"+
+            "<br><h2>Ship</h2>"+"<br><b>Message Id: "+ jsonSummary["4"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["4"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["4"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["4"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["4"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["4"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["4"]["RSSI"]+"</b>";
+      var popup_tower_1 = "<br><h2>Tower 1</h2>"+"<br><b>Message Id: "+ jsonSummary["1"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["1"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["1"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["1"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["1"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["1"]["roll"]+"</b>"+
+            "<br><h2>Tower 3</h2>"+"<br><b>Message Id: "+ jsonSummary["3"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["3"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["3"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["3"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["3"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["3"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["3"]["RSSI"]+"</b>"+
+            "<br><h2>Ship</h2>"+"<br><b>Message Id: "+ jsonSummary["4"]["msg_id"]+"</b>"+
+            "<br><b>Ship Id: "+jsonSummary["4"]["ship_id"]+"</b>"+
+            "<br><b>Nama Kapal: "+jsonSummary["4"]["nama_kapal"]+"</b>"+
+            "<br><b>Yaw: "+jsonSummary["4"]["yaw"]+"</b>"+
+            "<br><b>Pitch: "+jsonSummary["4"]["pitch"]+"</b>"+
+            "<br><b>Roll: "+jsonSummary["4"]["roll"]+"</b>"+
+            "<br><b>RSSI: "+jsonSummary["4"]["RSSI"]+"</b>";
+        if(jsonSummary["4"]["latitude"]!=0 && jsonSummary["4"]["longitude"]!=0){
+          // ship.setLatLng([jsonSummary["4"]["latitude"], jsonSummary["4"]["longitude"]]);
+          ship.bindPopup(popup_ship);
         }
-        else if(jsonMessage.ship_id=="4"){
-          ship.bindPopup(
-            "<b>Message Id: "+jsonMessage.msg_id+"</b>"+
-            "<br><b>Ship Id: "+jsonMessage.ship_id+"</b>"+
-            "<br><b>Nama Kapal: "+jsonMessage.nama_kapal+"</b>"+
-            "<br><b>Message Id: "+jsonMessage.msg_id+"</b>"+
-            "<br><b>Yaw: "+jsonMessage.yaw+"</b>"+
-            "<br><b>Pitch: "+jsonMessage.pitch+"</b>"+
-            "<br><b>Roll: "+jsonMessage.roll+"</b>"
-          );
+        else{
+          ship.bindPopup(popup_ship);
         }
+
+        if(jsonSummary["3"]["latitude"]!=0 && jsonSummary["3"]["longitude"]!=0){
+          // tower3.setLatLng([jsonSummary["3"]["latitude"], jsonSummary["3"]["longitude"]]);
+          tower3.bindPopup(popup_tower_3);
+        }
+        else{
+          tower3.bindPopup(popup_tower_3);
+        }
+
+        if(jsonSummary["2"]["latitude"]!=0 && jsonSummary["2"]["longitude"]!=0){
+          tower2.setLatLng([jsonSummary["2"]["latitude"], jsonSummary["2"]["longitude"]]);
+          tower2.bindPopup(popup_tower_2);
+        }
+        else{
+          tower2.bindPopup(popup_tower_2);
+        }
+
+        if(jsonSummary["1"]["latitude"]!=0 && jsonSummary["1"]["longitude"]!=0){
+          tower1.setLatLng([jsonSummary["1"]["latitude"], jsonSummary["1"]["longitude"]]);
+          tower1.bindPopup(popup_tower_1);
+        }
+        else{
+          tower1.bindPopup(popup_tower_1);
+        }
+    }
+
+
       }
-      catch {
-        console.log("error");
+      catch (error) {
+        console.log(error);
       }
     }
 

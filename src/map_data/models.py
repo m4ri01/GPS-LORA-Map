@@ -1,4 +1,4 @@
-from sqlalchemy import Table, Column, String, DateTime, Date, Interval, ForeignKey, Numeric, Float
+from sqlalchemy import Table, Column, String, DateTime, Date, Interval, ForeignKey, Numeric, Float, Integer
 from sqlalchemy.sql import func
 from fastapi_utils.guid_type import GUID, GUID_SERVER_DEFAULT_POSTGRESQL
 from sqlalchemy import MetaData
@@ -16,6 +16,7 @@ data_lora = Table(
     Column("yaw",Float, nullable=False),
     Column("pitch",Float, nullable=False),
     Column("roll",Float, nullable=False),
+    Column("RSSI",Integer,nullable=True),
     Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
     Column("updated_at", DateTime(timezone=True), onupdate=func.now(), nullable=True),
 )

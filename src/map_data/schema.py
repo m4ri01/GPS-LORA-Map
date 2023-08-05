@@ -9,3 +9,4 @@ class MapDataIn(BaseModel):
     yaw: float
     pitch: float
     roll: float
+    RSSI: int

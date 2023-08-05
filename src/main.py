@@ -36,9 +36,18 @@ def on_message(client, userdata, message):
             data_split = p.split("=")
             if data_split[0] == "latitude" or data_split[0] == "longitude" or data_split[0] == "yaw" or data_split[0] == "pitch" or data_split[0] == "roll":
                 dict_send[data_split[0]] = float(data_split[1]) 
+            elif data_split[0] == "rssi":
+                dict_send[data_split[0].upper()] = int(data_split[1])
+
             else:
-                dict_send[data_split[0]] = data_split[1]  
-        requests.post("http://localhost:5555/list",json=dict_send)
+                dict_send[data_split[0]] = data_split[1]
+            if data_split[0] == "ship_id" and data_split[1] == "1":
+                # print("a")
+                dict_send["RSSI"] = 0
+
+        # print(dict_send)  
+        result = requests.post("http://localhost:5555/list",json=dict_send)
+        print(result.status_code)
         # publish.single("map_realtime", json.dumps(dict_send), hostname=MQTT_BROKER_HOST, port=MQTT_BROKER_PORT)
     except Exception as e:
         print("error {}".format(e))
@@ -74,4 +83,4 @@ async def redirect():
 app.include_router(map_data_router)
 
 if __name__ == "__main__":
-    uvicorn.run("main:app",port=80,log_level="info",reload=True,host="0.0.0.0")
+    uvicorn.run("main:app",port=5555,log_level="info",reload=True,host="0.0.0.0")

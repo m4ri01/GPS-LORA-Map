@@ -12,6 +12,7 @@
                     <th>Yaw</th>
                     <th>Pitch</th>
                     <th>Roll</th>
+                    <th>RSSI</th>
                     <th>Created At</th>
                   </tr>
                   </thead>
@@ -27,6 +28,14 @@
                       <td>{{item.yaw}}</td>
                       <td>{{item.pitch}}</td>
                       <td>{{item.roll}}</td>
+                      <td>
+                        {% if item.RSSI == 0 %}
+                            <p></p>
+                        {% else %}
+                            {{item.RSSI}}
+                        {% endif %}
+
+                      </td>
                       <td>{{item.created_at}}</td>
                     </tr>
                     {% endfor %}
