@@ -46,8 +46,8 @@ def on_message(client, userdata, message):
                 dict_send["RSSI"] = 0
 
         # print(dict_send)  
-        result = requests.post("http://localhost:5555/list",json=dict_send)
-        print(result.status_code)
+        # result = requests.post("http://localhost:5555/list",json=dict_send)
+        # print(result.status_code)
         # publish.single("map_realtime", json.dumps(dict_send), hostname=MQTT_BROKER_HOST, port=MQTT_BROKER_PORT)
     except Exception as e:
         print("error {}".format(e))

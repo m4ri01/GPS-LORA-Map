@@ -94,10 +94,10 @@ crossorigin=""></script>
       iconSize: [30, 30],
       iconAnchor: [15, 30]
     });
-    var tower1 = L.marker([-7.2789019,112.7934876], { icon: icon_node1 }).addTo(map);
+    var tower1 = L.marker([-7.2789019,112.7933876], { icon: icon_node1 }).addTo(map);
     var tower2 = L.marker([-7.2786019,112.7936876], { icon: icon_node2 }).addTo(map);
     var tower3 = L.marker([-7.2792019,112.7936876], { icon: icon_node3 }).addTo(map);
-    var ship = L.marker([-7.2789019,112.7936876], { icon: icon_node4 }).addTo(map);
+    var ship = L.marker([-7.2792019,112.7936876], { icon: icon_node4 }).addTo(map);
     var jsonSummary = {};
     {% for item in data_map%}
     var jsonDB = {};
@@ -179,7 +179,7 @@ crossorigin=""></script>
         }
 
         if(jsonSummary["2"]["latitude"]!=0 && jsonSummary["2"]["longitude"]!=0){
-          tower2.setLatLng([jsonSummary["2"]["latitude"], jsonSummary["2"]["longitude"]]);
+          // tower2.setLatLng([jsonSummary["2"]["latitude"], jsonSummary["2"]["longitude"]]);
           tower2.bindPopup(popup_tower_2);
         }
         else{
@@ -187,7 +187,7 @@ crossorigin=""></script>
         }
 
         if(jsonSummary["1"]["latitude"]!=0 && jsonSummary["1"]["longitude"]!=0){
-          tower1.setLatLng([jsonSummary["1"]["latitude"], jsonSummary["1"]["longitude"]]);
+          // tower1.setLatLng([jsonSummary["1"]["latitude"], jsonSummary["1"]["longitude"]]);
           tower1.bindPopup(popup_tower_1);
         }
         else{
@@ -261,7 +261,7 @@ crossorigin=""></script>
         }
 
         if(jsonSummary["2"]["latitude"]!=0 && jsonSummary["2"]["longitude"]!=0){
-          tower2.setLatLng([jsonSummary["2"]["latitude"], jsonSummary["2"]["longitude"]]);
+          // tower2.setLatLng([jsonSummary["2"]["latitude"], jsonSummary["2"]["longitude"]]);
           tower2.bindPopup(popup_tower_2);
         }
         else{
@@ -269,7 +269,7 @@ crossorigin=""></script>
         }
 
         if(jsonSummary["1"]["latitude"]!=0 && jsonSummary["1"]["longitude"]!=0){
-          tower1.setLatLng([jsonSummary["1"]["latitude"], jsonSummary["1"]["longitude"]]);
+          // tower1.setLatLng([jsonSummary["1"]["latitude"], jsonSummary["1"]["longitude"]]);
           tower1.bindPopup(popup_tower_1);
         }
         else{
@@ -371,7 +371,7 @@ crossorigin=""></script>
             "<br><b>Roll: "+jsonSummary["4"]["roll"]+"</b>"+
             "<br><b>RSSI: "+jsonSummary["4"]["RSSI"]+"</b>";
         if(jsonSummary["4"]["latitude"]!=0 && jsonSummary["4"]["longitude"]!=0){
-          // ship.setLatLng([jsonSummary["4"]["latitude"], jsonSummary["4"]["longitude"]]);
+          ship.setLatLng([jsonSummary["4"]["latitude"], jsonSummary["4"]["longitude"]]);
           ship.bindPopup(popup_ship);
         }
         else{
@@ -387,7 +387,7 @@ crossorigin=""></script>
         }
 
         if(jsonSummary["2"]["latitude"]!=0 && jsonSummary["2"]["longitude"]!=0){
-          tower2.setLatLng([jsonSummary["2"]["latitude"], jsonSummary["2"]["longitude"]]);
+          // tower2.setLatLng([jsonSummary["2"]["latitude"], jsonSummary["2"]["longitude"]]);
           tower2.bindPopup(popup_tower_2);
         }
         else{
@@ -395,7 +395,7 @@ crossorigin=""></script>
         }
 
         if(jsonSummary["1"]["latitude"]!=0 && jsonSummary["1"]["longitude"]!=0){
-          tower1.setLatLng([jsonSummary["1"]["latitude"], jsonSummary["1"]["longitude"]]);
+          // tower1.setLatLng([jsonSummary["1"]["latitude"], jsonSummary["1"]["longitude"]]);
           tower1.bindPopup(popup_tower_1);
         }
         else{
@@ -453,7 +453,7 @@ crossorigin=""></script>
             "<br><b>Roll: "+jsonSummary["4"]["roll"]+"</b>"+
             "<br><b>RSSI: "+jsonSummary["4"]["RSSI"]+"</b>";
         if(jsonSummary["4"]["latitude"]!=0 && jsonSummary["4"]["longitude"]!=0){
-          // ship.setLatLng([jsonSummary["4"]["latitude"], jsonSummary["4"]["longitude"]]);
+          ship.setLatLng([jsonSummary["4"]["latitude"], jsonSummary["4"]["longitude"]]);
           ship.bindPopup(popup_ship);
         }
         else{
@@ -469,7 +469,7 @@ crossorigin=""></script>
         }
 
         if(jsonSummary["2"]["latitude"]!=0 && jsonSummary["2"]["longitude"]!=0){
-          tower2.setLatLng([jsonSummary["2"]["latitude"], jsonSummary["2"]["longitude"]]);
+          // tower2.setLatLng([jsonSummary["2"]["latitude"], jsonSummary["2"]["longitude"]]);
           tower2.bindPopup(popup_tower_2);
         }
         else{
@@ -477,7 +477,7 @@ crossorigin=""></script>
         }
 
         if(jsonSummary["1"]["latitude"]!=0 && jsonSummary["1"]["longitude"]!=0){
-          tower1.setLatLng([jsonSummary["1"]["latitude"], jsonSummary["1"]["longitude"]]);
+          // tower1.setLatLng([jsonSummary["1"]["latitude"], jsonSummary["1"]["longitude"]]);
           tower1.bindPopup(popup_tower_1);
         }
         else{
