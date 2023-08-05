@@ -57,7 +57,8 @@ async def add_data(data:MapDataIn):
         longitude = data.longitude,
         yaw = data.yaw,
         pitch = data.pitch,
-        roll = data.roll
+        roll = data.roll,
+        RSSI = data.RSSI
     )
     await db.execute(query)
     return {"message":"data berhasil ditambahkan"}
